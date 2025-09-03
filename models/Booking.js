@@ -9,6 +9,7 @@ const BookingSchema = mongoose.Schema({
   guestId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Guest",
+    required: true,
   },
   status: {
     type: String,

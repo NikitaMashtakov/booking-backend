@@ -4,7 +4,7 @@ const { generate } = require("../helpers/token");
 
 //register
 
-async function register(login, password, role) {
+async function register(login, email, name, profilePhoto, password,  role, currency) {
   if (!password) {
     throw new Error("Password is empty");
   }
@@ -13,7 +13,12 @@ async function register(login, password, role) {
 
   const user = await Guest.create({
     login,
+    email,
+    name,
+    profilePhoto,
     password: passwordHash,
+    role,
+    currency
   });
 
   const token = generate({ id: user.id });

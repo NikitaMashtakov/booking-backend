@@ -14,7 +14,6 @@ const PropertySchema = mongoose.Schema(
     geo: {
       address: {
         type: String,
-        required: true,
       },
       city: {
         type: String,
@@ -32,7 +31,7 @@ const PropertySchema = mongoose.Schema(
     images: [
       {
         type: String,
-        required: true,
+        // required: true,
         validate: {
           validator: validator.isURL,
           message: "Image should be a valid URL",
