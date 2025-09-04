@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const roles = require("../constants/roles");
 const validator = require("validator");
 
-const GuestSchema = mongoose.Schema(
+const UserSchema = mongoose.Schema(
   {
     login: {
       type: String,
@@ -17,10 +17,10 @@ const GuestSchema = mongoose.Schema(
         validator: validator.isEmail,
         message: "Email should be a valid email",
       },
-      verified: {
-        type: Boolean,
-        default: false,
-      },
+    },
+    emailIsVerified: {
+      type: Boolean,
+      default: false,
     },
     name: {
       firstName: {
@@ -43,18 +43,30 @@ const GuestSchema = mongoose.Schema(
       required: true,
     },
     role: {
-      type: Number,
-      default: roles.GUEST,
+      type: [String],
+      enum: [roles.GUEST, roles.HOST, roles.ADMIN],
+      default: [roles.GUEST],
     },
-    currency: {
+    bookings: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Booking",
+      },
+    ],
+    properties: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Property",
+      },
+    ],
+    preferredCurrency: {
       type: String,
-      required: true,
       default: "RUB",
     },
   },
   { timestamps: true }
 );
 
-const Guest = mongoose.model("Guest", GuestSchema);
+const User = mongoose.model("User", UserSchema);
 
-module.exports = Guest;
+module.exports = User;

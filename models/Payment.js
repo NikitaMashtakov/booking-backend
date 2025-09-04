@@ -1,12 +1,12 @@
 const mongoose = require("mongoose");
 
 const PaymentSchema = mongoose.Schema({
-  recipientId: {
+  payerId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
     required: true,
   },
-  senderId: {
+  payeeId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
     required: true,
@@ -27,7 +27,7 @@ const PaymentSchema = mongoose.Schema({
   paymentMethod: {
     type: String,
     enum: ["card", "cash"],
-    default: "card",
+    default: "cash",
   },
   paymentStatus: {
     type: String,

@@ -8,7 +8,7 @@ const BookingSchema = mongoose.Schema({
   },
   guestId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Guest",
+    ref: "User",
     required: true,
   },
   status: {
@@ -36,11 +36,6 @@ const BookingSchema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Payment",
   },
-  currency: {
-    type: String,
-    required: true,
-    default: "RUB",
-  },
   createdAt: {
     type: Date,
     default: Date.now,
@@ -49,12 +44,10 @@ const BookingSchema = mongoose.Schema({
     type: Date,
     default: Date.now,
   },
-  reviews: [
-    {
+  review: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Review",
-    },
-  ],
+  },
 });
 
 const Booking = mongoose.model("Booking", BookingSchema);

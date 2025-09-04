@@ -12,7 +12,7 @@ const express = require("express");
 // const mapPost = require("../helpers/mapPost");
 // const mapComment = require("../helpers/mapComment");
 // const ROLES = require("../constants/roles");
-const { createBooking } = require("../controllers/bookings");
+const { createBooking } = require("../controllers/booking-controller");
 
 const router = express.Router({ mergeParams: true });
 

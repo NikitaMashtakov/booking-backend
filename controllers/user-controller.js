@@ -1,17 +1,22 @@
 const bcrypt = require("bcrypt");
-const Guest = require("../models/Guest");
+const User = require("../models/User");
+const roles = require("../constants/roles");
 const { generate } = require("../helpers/token");
 
 //register
 
 async function register(login, email, name, profilePhoto, password,  role, currency) {
+  if (role === roles.ADMIN) {
+    throw new Error("Incorrect role");
+  }
+
   if (!password) {
     throw new Error("Password is empty");
   }
 
   const passwordHash = await bcrypt.hash(password, 10);
 
-  const user = await Guest.create({
+  const user = await User.create({
     login,
     email,
     name,
@@ -28,7 +33,7 @@ async function register(login, email, name, profilePhoto, password,  role, curre
 //login
 
 async function login(login, password) {
-  const user = await Guest.findOne({ login });
+  const user = await User.findOne({ login });
 
   if (!user) {
     throw new Error("User not found");
@@ -47,19 +52,21 @@ async function login(login, password) {
 
 //delete
 
-function deleteGuest(id) {
-  return Guest.deleteOne({ _id: id });
+function deleteUser(id) {
+  return User.deleteOne({ _id: id });
 }
 // edit role
 
-function updateGuest(id, userData) {
-  console.log("userdata", userData);
+function updateUser(id, userData) {
+  if (userData.role){
+    return User.findByIdAndUpdate(id, {$push: {role: userData.role}});
+  }
   return User.findByIdAndUpdate(id, userData, { returnDocument: "after" });
 }
 
 module.exports = {
   register,
   login,
-  deleteGuest,
-  updateGuest,
+  deleteUser,
+  updateUser,
 };

@@ -41,17 +41,16 @@ const PropertySchema = mongoose.Schema(
     amenities: [
       {
         type: String,
-        required: true,
       },
     ],
     host: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Host",
+      ref: "User",
       required: true,
     },
     guestsCount: {
       type: Number,
-      required: true,
+      // required: true,
     },
     reviews: [
       {
