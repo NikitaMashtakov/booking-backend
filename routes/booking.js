@@ -1,4 +1,4 @@
-const express = require("express");
+const express = require('express');
 // const {
 //   getPosts,
 //   getPost,
@@ -7,12 +7,18 @@ const express = require("express");
 //   deletePost,
 // } = require("../controllers/post");
 // const { addComment, deleteComment } = require("../controllers/comment");
-// const authenticated = require("../middlewares/authenticated");
+const authenticated = require('../middlewares/authenticated');
 // const hasRole = require("../middlewares/hasRole");
 // const mapPost = require("../helpers/mapPost");
 // const mapComment = require("../helpers/mapComment");
 // const ROLES = require("../constants/roles");
-const { createBooking } = require("../controllers/booking-controller");
+const {
+  createBooking,
+  getGuestsBookings,
+  getHostsBookings,
+  getPropertyBookings,
+  getBooking,
+} = require('../controllers/booking-controller');
 
 const router = express.Router({ mergeParams: true });
 
@@ -52,17 +58,38 @@ const router = express.Router({ mergeParams: true });
 //   }
 // );
 
-router.post("/", async (req, res) => {
+router.post('/', authenticated, async (req, res) => {
   const newBooking = await createBooking({
     propertyId: req.body.propertyId,
-    guestId: req.body.guestId,
+    guestId: req.user.id,
     checkIn: req.body.checkIn,
     checkOut: req.body.checkOut,
     guestsCount: req.body.guestsCount,
     totalPrice: req.body.totalPrice,
+    createdBy: req.user.id,
   });
 
   res.send({ data: newBooking });
+});
+
+router.get('/guest/:id', authenticated, async (req, res) => {
+  const bookings = await getGuestsBookings(req.params.id);
+  res.send({ data: bookings });
+});
+
+router.get('/host/:id', authenticated, async (req, res) => {
+  const bookings = await getHostsBookings(req.params.id);
+  res.send({ data: bookings });
+});
+
+router.get('/property/:id', authenticated, async (req, res) => {
+  const bookings = await getPropertyBookings(req.params.id);
+  res.send({ data: bookings });
+});
+
+router.get('/:id', authenticated, async (req, res) => {
+  const booking = await getBooking(req.params.id);
+  res.send({ data: booking });
 });
 
 // router.patch(

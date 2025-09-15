@@ -1,5 +1,5 @@
-const mongoose = require("mongoose");
-const validator = require("validator");
+const mongoose = require('mongoose');
+const validator = require('validator');
 
 const PropertySchema = mongoose.Schema(
   {
@@ -34,7 +34,7 @@ const PropertySchema = mongoose.Schema(
         // required: true,
         validate: {
           validator: validator.isURL,
-          message: "Image should be a valid URL",
+          message: 'Image should be a valid URL',
         },
       },
     ],
@@ -45,7 +45,7 @@ const PropertySchema = mongoose.Schema(
     ],
     host: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      ref: 'User',
       required: true,
     },
     guestsCount: {
@@ -55,13 +55,16 @@ const PropertySchema = mongoose.Schema(
     reviews: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Review",
+        ref: 'Review',
       },
     ],
+    isDeleted: { type: Boolean, default: false },
+    deletedAt: { type: Date },
+    status: { type: String, enum: ['active', 'inactive', 'archived'], default: 'active' },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
-const Property = mongoose.model("Property", PropertySchema);
+const Property = mongoose.model('Property', PropertySchema);
 
 module.exports = Property;
