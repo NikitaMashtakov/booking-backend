@@ -1,6 +1,6 @@
-const mongoose = require("mongoose");
-const roles = require("../constants/roles");
-const validator = require("validator");
+const mongoose = require('mongoose');
+const roles = require('../constants/roles');
+const validator = require('validator');
 
 const UserSchema = mongoose.Schema(
   {
@@ -15,7 +15,7 @@ const UserSchema = mongoose.Schema(
       unique: true,
       validate: {
         validator: validator.isEmail,
-        message: "Email should be a valid email",
+        message: 'Email should be a valid email',
       },
     },
     emailIsVerified: {
@@ -35,7 +35,7 @@ const UserSchema = mongoose.Schema(
       type: String,
       validate: {
         validator: validator.isURL,
-        message: "Profile photo should be a valid URL",
+        message: 'Profile photo should be a valid URL',
       },
     },
     password: {
@@ -50,23 +50,29 @@ const UserSchema = mongoose.Schema(
     bookings: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Booking",
+        ref: 'Booking',
       },
     ],
     properties: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Property",
+        ref: 'Property',
+      },
+    ],
+    favoriteProperties: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Property',
       },
     ],
     preferredCurrency: {
       type: String,
-      default: "RUB",
+      default: 'RUB',
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
-const User = mongoose.model("User", UserSchema);
+const User = mongoose.model('User', UserSchema);
 
 module.exports = User;

@@ -64,9 +64,14 @@ function updateUser(id, userData) {
   return User.findByIdAndUpdate(id, userData, { returnDocument: 'after' });
 }
 
+function getUser(id) {
+  return User.findById(id);
+}
+
 module.exports = {
   register,
   login,
   deleteUser,
   updateUser,
+  getUser,
 };

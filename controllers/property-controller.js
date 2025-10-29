@@ -5,6 +5,27 @@ const Booking = require('../models/Booking');
 const Payment = require('../models/Payment');
 const mongoose = require('mongoose');
 
+async function getPropertiesLocations() {
+  console.log('getPropertiesLocations');
+  const properties = await Property.aggregate([
+    { $match: { isDeleted: { $ne: true } } },
+    { $project: { _id: 0, geo: 1 } },
+    {
+      $group: {
+        _id: { city: '$geo.city', country: '$geo.country' },
+      },
+    },
+    {
+      $project: {
+        _id: 0,
+        city: '$_id.city',
+        country: '$_id.country',
+      },
+    },
+  ]);
+  return properties;
+}
+
 async function createProperty({
   title,
   description,
@@ -270,4 +291,5 @@ module.exports = {
   deleteProperty,
   getPropertyWithReviews,
   getProperties,
+  getPropertiesLocations,
 };
